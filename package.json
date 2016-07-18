@@ -1,0 +1,19 @@
+{
+  "name": "calorie-counter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oregzoltan/calorie-counter.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oregzoltan/calorie-counter/issues"
+  },
+  "homepage": "https://github.com/oregzoltan/calorie-counter#readme"
+}
