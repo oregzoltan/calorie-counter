@@ -5,6 +5,7 @@ var app = express();
 // app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static('client'));
+
 var mysql = require("mysql");
 
 var con = mysql.createConnection({
@@ -22,33 +23,58 @@ con.connect(function(err){
   console.log("Connection established");
 });
 
-app.post('/meals', function(req, res) {
-  con.query('INSERT INTO meals SET ?', { name: req.body.name, calories: req.body.calories, date: req.body.date}, function(err,row){
+var Meals = (function () {
+
+  function errorHandler(err) {
     if(err) {
       console.log(err.toString());
       return;
     }
-  res.send({"status": "ok"});
+  }
+
+  function publicAddMeal (req, cb) {
+    con.query('INSERT INTO meals SET ?', { name: req.body.name, calories: req.body.calories, date: req.body.date}, function(err,row){
+      errorHandler(err);
+      cb({id: row.insertId, name: req.body.name, calories: req.body.calories, date: req.body.date});
+    });
+  }
+
+  function publicGetMeal (req, cb) {
+    con.query('SELECT * FROM meals;',function(err,rows){
+      errorHandler(err);
+      cb(rows);
+    });
+  }
+
+  function publicDelMeal (req, cb) {
+    con.query('DELETE FROM meals WHERE id = ' + req.params.id, function(err,row){
+      errorHandler(err);
+      cb(row);
+    });
+  }
+
+  return {
+    addMeal: publicAddMeal,
+    getMeal: publicGetMeal,
+    delMeal: publicDelMeal
+  };
+})();
+
+app.post('/meals', function(req, res) {
+  Meals.addMeal(req, function (result) {
+    res.send(result);
   });
 });
 
 app.get('/meals', function(req, res) {
-  con.query('SELECT * FROM meals;',function(err,rows){
-    if(err) {
-      console.log(err.toString());
-      return;
-    }
-    res.send(rows);
+  Meals.getMeal(req, function (result) {
+    res.send(result);
   });
 });
 
 app.delete('/meals/:id', function(req, res) {
-  con.query('DELETE FROM meals WHERE id = ' + req.params.id, function(err,row){
-    if(err) {
-      console.log(err.toString());
-      return;
-    }
-    if (row.affectedRows === 1) {
+  Meals.delMeal(req, function (result) {
+    if (result.affectedRows === 1) {
       res.send({"status": "ok"});
     } else {
       res.send({"status": "not exists"});
