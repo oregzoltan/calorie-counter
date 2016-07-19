@@ -25,7 +25,7 @@ con.connect(function(err){
 app.post('/meals', function(req, res) {
   con.query('INSERT INTO meals SET ?', { name: req.body.name, calories: req.body.calories, date: req.body.date}, function(err,row){
     if(err) {
-      console.log(err);
+      console.log(err.toString());
       return;
     }
   res.send({"status": "ok"});
@@ -35,7 +35,7 @@ app.post('/meals', function(req, res) {
 app.get('/meals', function(req, res) {
   con.query('SELECT * FROM meals;',function(err,rows){
     if(err) {
-      console.log(err);
+      console.log(err.toString());
       return;
     }
     res.send(rows);
