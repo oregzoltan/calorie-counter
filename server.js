@@ -6,21 +6,39 @@ var app = express();
 // app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static('client'));
+var mysql = require("mysql");
+
+var con = mysql.createConnection({
+  database: "caloriecounter",
+  host: "localhost",
+  user: "root",
+  password: "velox"
+});
+
+con.connect(function(err){
+  if(err){
+    console.log("Error connecting to Db");
+    return;
+  }
+  console.log("Connection established");
+});
+
+var myMeals = db(con);
 
 app.post('/meals', function(req, res) {
-  db.addMeal(req, function (result) {
+  myMeals.addMeal(req, function (result) {
     res.send(result);
   });
 });
 
 app.get('/meals', function(req, res) {
-  db.getMeal(req, function (result) {
+  myMeals.getMeal(req, function (result) {
     res.send(result);
   });
 });
 
 app.delete('/meals/:id', function(req, res) {
-  db.delMeal(req, function (result) {
+  myMeals.delMeal(req, function (result) {
     if (result.affectedRows === 1) {
       res.send({"status": "ok"});
     } else {

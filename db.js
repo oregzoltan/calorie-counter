@@ -1,21 +1,4 @@
-var mysql = require("mysql");
-
-var con = mysql.createConnection({
-  database: "caloriecounter",
-  host: "localhost",
-  user: "root",
-  password: "velox"
-});
-
-con.connect(function(err){
-  if(err){
-    console.log("Error connecting to Db");
-    return;
-  }
-  console.log("Connection established");
-});
-
-var Meals = (function () {
+var Meals = (function (con) {
 
   function errorHandler(err) {
     if(err) {
@@ -50,6 +33,6 @@ var Meals = (function () {
     getMeal: publicGetMeal,
     delMeal: publicDelMeal
   };
-})();
+});
 
 module.exports = Meals;

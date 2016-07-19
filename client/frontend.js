@@ -5,6 +5,9 @@ var date = document.querySelector('#date');
 var addButton = document.querySelector('.addButton');
 var nowButton = document.querySelector('.nowButton');
 var mealList = document.querySelector('.mealList');
+var filter = document.querySelector('#filter');
+var filterButton = document.querySelector('.filterButton');
+var showAllButton = document.querySelector('.showAllButton');
 
 var url = 'http://localhost:3000/meals';
 
@@ -17,16 +20,8 @@ function createAnElement(id, name, calories, date) {
 }
 
 function fillDate() {
-  date.value = Date();
-  console.log(Date());
+  date.value = Date().toLocaleString();
 }
-//
-// function createButtons(id) {
-//   document.getElementById('d'+id).addEventListener('click', delTodo);
-//   document.getElementById('chk'+id).addEventListener('click', chkTodo);
-//   document.getElementById('yod'+id).addEventListener('click', yodaTodo);
-//   document.getElementById('chk'+id).classList.add('unchecked');
-// }
 
 function xhrRequest(method, url, data, callback) {
   var xhr = new XMLHttpRequest();
@@ -55,30 +50,10 @@ function addNewMeal() {
   calories.value = '';
   date.value = '';
   xhrRequest('POST', url, JSON.stringify(newMealToAdd), function(response) {
-    // var data = JSON.parse(response);
-    // createAnElement(data.id, data.text);
+    var data = JSON.parse(response);
+    createAnElement(data.id, data.name, data.calories, data.date);
   })
 }
-
-// function delTodo(event) {
-//   var id = event.target.getAttribute('id').slice(1);
-//   xhrRequest('DELETE', url + '/' + id, '', function(response) {
-//     divContainer.removeChild(document.getElementById('di'+id));
-//   })
-// }
-
-// function chkTodo(event) {
-//   var id = event.target.getAttribute('id').slice(3);
-//   var toSend = {
-//     text: document.querySelector('#di'+id + ' div').textContent,
-//     completed: !document.getElementById('chk'+id).classList.contains('checked')
-//   };
-//   xhrRequest('PUT', url + '/' + id, JSON.stringify(toSend), function(response) {
-//     document.getElementById('chk'+id).classList.toggle('checked');
-//   })
-// }
-
-
 
 
 getMeals();
