@@ -37,7 +37,7 @@ var Meals = (function (con) {
   }
 
   function publicFilterMeals (date, cb) {
-    con.query('SELECT * FROM meals WHERE meals.date LIKE ' + '"' + date + '%' + '";',function(err,rows){
+    con.query('SELECT * FROM meals WHERE meals.date LIKE ' + '"' + date + '%' + '";', function(err,rows){
       errorHandler(err);
       cb(rows);
     });
