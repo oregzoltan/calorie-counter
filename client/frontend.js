@@ -8,6 +8,7 @@ var mealList = document.querySelector('.mealList');
 var filterDate = document.querySelector('#filterDate');
 var filterButton = document.querySelector('.filterButton');
 var showAllButton = document.querySelector('.showAllButton');
+var sum = document.querySelector('.sum');
 
 var url = 'http://localhost:3000/meals';
 
@@ -28,6 +29,10 @@ function refreshList() {
   getMeals();
 }
 
+function setSum(data) {
+  sum.textContent = 'Sum of calories: ' + data.reduce(function(result, item) {return result + item.calories;}, 0);
+}
+
 function xhrRequest(method, url, data, callback) {
   var xhr = new XMLHttpRequest();
   xhr.open(method, url, true);
@@ -43,12 +48,12 @@ function xhrRequest(method, url, data, callback) {
 function getMeals() {
   xhrRequest('GET', url, '', function(response) {
     var data = JSON.parse(response);
-    data.forEach(function (e, i) {
-      createAnElement(data[i].id, data[i].name, data[i].calories, data[i].date);
+    setSum(data);
+    data.forEach(function (e) {
+      createAnElement(e.id, e.name, e.calories, e.date);
     })
   })
 }
-
 
 function addNewMeal() {
   var newMealToAdd = {name: nameOfMeal.value, calories: calories.value , date: date.value};
@@ -63,9 +68,10 @@ function addNewMeal() {
 function filterByDate() {
   xhrRequest('GET', url + '/' + filterDate.value, JSON.stringify(filterDate.value), function(response) {
     var data = JSON.parse(response);
+    setSum(data);
     mealList.innerHTML='';
-    data.forEach(function (e, i) {
-      createAnElement(data[i].id, data[i].name, data[i].calories, data[i].date);
+    data.forEach(function (e) {
+      createAnElement(e.id, e.name, e.calories, e.date);
     })
   })
   filterDate.value = '';
