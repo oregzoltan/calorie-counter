@@ -19,21 +19,17 @@ body {
   opacity: 0.9;
 }
 
-h1, h3 {
+h1, h2 {
   text-align: center;
   margin-bottom: 10px;
   font-weight: normal;
   color: #9b9b9b;
 }
 
-h3 {
-  font-size: 24px;
-}
-
 .mealList {
   margin-left: 50px;
   color: #9b9b9b;
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .nowButton, .filterButton, .showAllButton, .addButton {

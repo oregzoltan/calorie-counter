@@ -26,9 +26,9 @@ var frontEnd = (function () {
     }
   }
 
-
   function fillDate() {
-    date.value = Date();
+    var newDate = new Date();
+    date.value = newDate.getFullYear() + '-' + (newDate.getMonth()+1) + '-' + newDate.getDate() + ' ' + newDate.getHours() + '-' + newDate.getMinutes();
   }
 
   function refreshList() {
