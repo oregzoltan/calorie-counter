@@ -66,7 +66,7 @@ function addNewMeal() {
 }
 
 function filterByDate() {
-  xhrRequest('GET', url + '/' + filterDate.value, JSON.stringify(filterDate.value), function(response) {
+  xhrRequest('GET', url + '?date=' + filterDate.value, '', function(response) {
     var data = JSON.parse(response);
     setSum(data);
     mealList.innerHTML='';

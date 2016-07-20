@@ -31,19 +31,19 @@ app.post('/meals', function(req, res) {
 });
 
 app.get('/meals', function(req, res) {
-  myMeals.getMeal(req, function (result) {
+  if (req.query.date) {
+    myMeals.filterMeals(req.query.date, function (result) {
+      res.send(result);
+    });
+  } else {
+    myMeals.getMeal(req, function (result) {
     res.send(result);
-  });
+    });
+  }
 });
 
 app.delete('/meals/:id', function(req, res) {
   myMeals.delMeal(req.params.id, function (result) {
-    res.send(result);
-  });
-});
-
-app.get('/meals/:filter', function(req, res) {
-  myMeals.filterMeals(req.params.filter, function (result) {
     res.send(result);
   });
 });
