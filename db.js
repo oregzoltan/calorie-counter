@@ -10,7 +10,7 @@ var Meals = (function (con) {
   function publicAddMeal (req, cb) {
     con.query('INSERT INTO meals SET ?', { name: req.body.name, calories: req.body.calories, date: req.body.date}, function(err,row){
       errorHandler(err);
-      cb({id: row.insertId, name: req.body.name, calories: req.body.calories, date: req.body.date});
+      cb(row);
     });
   }
 
@@ -28,10 +28,18 @@ var Meals = (function (con) {
     });
   }
 
+  function publicFilterMeals (req, cb) {
+    con.query('SELECT * FROM meals WHERE meals.date LIKE ' + '"' + req.params.filter + '%' + '";',function(err,rows){
+      errorHandler(err);
+      cb(rows);
+    });
+  }
+
   return {
     addMeal: publicAddMeal,
     getMeal: publicGetMeal,
-    delMeal: publicDelMeal
+    delMeal: publicDelMeal,
+    filterMeals: publicFilterMeals
   };
 });
 

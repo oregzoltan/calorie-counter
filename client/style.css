@@ -7,7 +7,7 @@ h1 {
   margin-bottom: 10px;
 }
 
-#nameOfMeal, #calories, #date, #filter {
+#nameOfMeal, #calories, #date, #filterDate {
   margin-left: 12px;
   font-size: 25px;
   margin-bottom: 5px;
@@ -34,7 +34,6 @@ h1 {
   background-color: grey;
   margin-left: 190px;
   margin-bottom: 5px;
-
 }
 
 .nowButton, .filterButton, .showAllButton {

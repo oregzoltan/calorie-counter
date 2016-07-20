@@ -5,7 +5,7 @@ var date = document.querySelector('#date');
 var addButton = document.querySelector('.addButton');
 var nowButton = document.querySelector('.nowButton');
 var mealList = document.querySelector('.mealList');
-var filter = document.querySelector('#filter');
+var filterDate = document.querySelector('#filterDate');
 var filterButton = document.querySelector('.filterButton');
 var showAllButton = document.querySelector('.showAllButton');
 
@@ -21,6 +21,11 @@ function createAnElement(id, name, calories, date) {
 
 function fillDate() {
   date.value = Date().toLocaleString();
+}
+
+function refreshList() {
+  mealList.innerHTML='';
+  getMeals();
 }
 
 function xhrRequest(method, url, data, callback) {
@@ -44,18 +49,30 @@ function getMeals() {
   })
 }
 
+
 function addNewMeal() {
   var newMealToAdd = {name: nameOfMeal.value, calories: calories.value , date: date.value};
   nameOfMeal.value = '';
   calories.value = '';
   date.value = '';
   xhrRequest('POST', url, JSON.stringify(newMealToAdd), function(response) {
-    var data = JSON.parse(response);
-    createAnElement(data.id, data.name, data.calories, data.date);
+    refreshList();
   })
 }
 
+function filterByDate() {
+  xhrRequest('GET', url + '/' + filterDate.value, JSON.stringify(filterDate.value), function(response) {
+    var data = JSON.parse(response);
+    mealList.innerHTML='';
+    data.forEach(function (e, i) {
+      createAnElement(data[i].id, data[i].name, data[i].calories, data[i].date);
+    })
+  })
+  filterDate.value = '';
+}
 
 getMeals();
 addButton.addEventListener('click', addNewMeal);
 nowButton.addEventListener('click', fillDate);
+filterButton.addEventListener('click', filterByDate);
+showAllButton.addEventListener('click', refreshList);

@@ -27,7 +27,9 @@ var myMeals = db(con);
 
 app.post('/meals', function(req, res) {
   myMeals.addMeal(req, function (result) {
-    res.send(result);
+    if (result.affectedRows === 1) {
+      res.send({"status": "ok"});
+    }
   });
 });
 
@@ -44,6 +46,12 @@ app.delete('/meals/:id', function(req, res) {
     } else {
       res.send({"status": "not exists"});
     }
+  });
+});
+
+app.get('/meals/:filter', function(req, res) {
+  myMeals.filterMeals(req, function (result) {
+    res.send(result);
   });
 });
 
