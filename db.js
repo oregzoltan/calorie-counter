@@ -7,10 +7,14 @@ var Meals = (function (con) {
     }
   }
 
-  function publicAddMeal (req, cb) {
-    con.query('INSERT INTO meals SET ?', { name: req.body.name, calories: req.body.calories, date: req.body.date}, function(err,row){
+  function publicAddMeal (meal, cb) {
+    con.query('INSERT INTO meals SET ?', meal, function(err,row){
       errorHandler(err);
-      cb(row);
+      if (row.affectedRows === 1) {
+        cb({"status": "ok"});
+      } else {
+        cb(row);
+      }
     });
   }
 
@@ -21,15 +25,19 @@ var Meals = (function (con) {
     });
   }
 
-  function publicDelMeal (req, cb) {
-    con.query('DELETE FROM meals WHERE id = ' + req.params.id, function(err,row){
+  function publicDelMeal (id, cb) {
+    con.query('DELETE FROM meals WHERE id = ?', id, function(err,row){
       errorHandler(err);
-      cb(row);
+      if (row.affectedRows === 1) {
+        cb({"status": "ok"});
+      } else {
+        cb({"status": "not exists"});
+      }
     });
   }
 
-  function publicFilterMeals (req, cb) {
-    con.query('SELECT * FROM meals WHERE meals.date LIKE ' + '"' + req.params.filter + '%' + '";',function(err,rows){
+  function publicFilterMeals (date, cb) {
+    con.query('SELECT * FROM meals WHERE meals.date LIKE ' + '"' + date + '%' + '";',function(err,rows){
       errorHandler(err);
       cb(rows);
     });
