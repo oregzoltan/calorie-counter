@@ -18,7 +18,7 @@ var Meals = (function (con) {
     });
   }
 
-  function publicGetMeal (req, cb) {
+  function publicGetMeal (cb) {
     con.query('SELECT * FROM meals;',function(err,rows){
       errorHandler(err);
       cb({"meals":rows});
@@ -29,7 +29,6 @@ var Meals = (function (con) {
     con.query('DELETE FROM meals WHERE id = ?', id, function(err,row){
       errorHandler(err);
       if (row.affectedRows === 1) {
-        console.log(row);
         cb({"status": "ok", "meal": {"id": id}});
       } else {
         cb({"status": "not exists"});

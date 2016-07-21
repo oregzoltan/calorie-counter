@@ -1,4 +1,5 @@
 'use strict';
+
 var dateFormat = require('dateformat');
 const db = require('./db');
 var express = require('express');
@@ -27,7 +28,7 @@ var myMeals = db(con);
 
 app.post('/meals', function(req, res) {
   myMeals.addMeal(req.body, function (result) {
-      res.send(result);
+    res.send(result);
   });
 });
 
@@ -37,7 +38,7 @@ app.get('/meals', function(req, res) {
       res.send(result);
     });
   } else {
-    myMeals.getMeal(req, function (result) {
+    myMeals.getMeal(function (result) {
       res.send(result);
     });
   }
