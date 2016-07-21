@@ -1,18 +1,26 @@
 'use strict';
 
-var nameOfMeal = document.querySelector('#nameOfMeal');
-var calories = document.querySelector('#calories');
-var date = document.querySelector('#date');
-var addButton = document.querySelector('.addButton');
-var nowButton = document.querySelector('.nowButton');
-var mealList = document.querySelector('.mealList');
-var filterDate = document.querySelector('#filterDate');
-var filterButton = document.querySelector('.filterButton');
-var showAllButton = document.querySelector('.showAllButton');
-var sum = document.querySelector('.sum');
-var url = 'http://localhost:3000/meals';
-
 var frontEnd = (function () {
+
+  var nameOfMeal = document.querySelector('#nameOfMeal');
+  var calories = document.querySelector('#calories');
+  var date = document.querySelector('#date');
+  var mealList = document.querySelector('.mealList');
+  var filterDate = document.querySelector('#filterDate');
+  var sum = document.querySelector('.sum');
+  var url = 'http://localhost:3000/meals';
+
+  function init() {
+    var addButton = document.querySelector('.addButton');
+    var nowButton = document.querySelector('.nowButton');
+    var filterButton = document.querySelector('.filterButton');
+    var showAllButton = document.querySelector('.showAllButton');
+    addButton.addEventListener('click', frontEnd.addNewMeal);
+    nowButton.addEventListener('click', frontEnd.fillDate);
+    filterButton.addEventListener('click', frontEnd.filterByDate);
+    showAllButton.addEventListener('click', frontEnd.refreshList);
+    frontEnd.getMeals();
+  }
 
   function xhrRequest(method, url, data, callback) {
     var xhr = new XMLHttpRequest();
@@ -26,9 +34,13 @@ var frontEnd = (function () {
     }
   }
 
+  function formatDate(date) {
+    console.log(date);
+    return (date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate() + ' ' + date.getHours() + '-' + date.getMinutes());
+  }
+
   function fillDate() {
-    var newDate = new Date();
-    date.value = newDate.getFullYear() + '-' + (newDate.getMonth()+1) + '-' + newDate.getDate() + ' ' + newDate.getHours() + '-' + newDate.getMinutes();
+    date.value = formatDate(new Date());
   }
 
   function refreshList() {
@@ -39,7 +51,7 @@ var frontEnd = (function () {
   function createAnElement(id, name, calories, date) {
     var newMeal = document.createElement('li');
     newMeal.classList.add("meal");
-    newMeal.textContent = name + ' ' + calories + ' ' + date;
+    newMeal.textContent = name + ' ' + calories + ' ' + formatDate(new Date(date));
     newMeal.setAttribute('id', id);
     mealList.appendChild(newMeal);
   }
@@ -81,6 +93,7 @@ var frontEnd = (function () {
   }
 
   return {
+    init: init,
     getMeals: getMeals,
     addNewMeal: addNewMeal,
     fillDate: fillDate,
@@ -89,8 +102,4 @@ var frontEnd = (function () {
   }
 })();
 
-frontEnd.getMeals();
-addButton.addEventListener('click', frontEnd.addNewMeal);
-nowButton.addEventListener('click', frontEnd.fillDate);
-filterButton.addEventListener('click', frontEnd.filterByDate);
-showAllButton.addEventListener('click', frontEnd.refreshList);
+frontEnd.init();
