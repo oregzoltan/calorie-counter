@@ -9,6 +9,7 @@ var frontEnd = (function () {
   var filterDate = document.querySelector('#filterDate');
   var sum = document.querySelector('.sum');
   var url = 'http://localhost:3000/meals';
+  var sumOfCal = 0;
 
   function init() {
     var addButton = document.querySelector('.addButton');
@@ -49,14 +50,20 @@ var frontEnd = (function () {
 
   function createAnElement(id, name, calories, date) {
     var newMeal = document.createElement('li');
-    newMeal.classList.add("meal");
+    var delButton = document.createElement('button');
+    delButton.classList.add('delButton');
+    delButton.setAttribute('value', id);
+    delButton.addEventListener('click', delMeal);
+    newMeal.classList.add('meal');
     newMeal.textContent = name + ' ' + calories + ' ' + formatDate(new Date(date));
+    newMeal.appendChild(delButton);
     newMeal.setAttribute('id', id);
     mealList.appendChild(newMeal);
   }
 
   function setSum(data) {
-    sum.textContent = 'Sum of calories: ' + data.reduce(function(result, item) {return result + item.calories;}, 0);
+    sumOfCal = data.reduce(function(result, item) {return result + item.calories;}, 0);
+    sum.textContent = 'Sum of calories: ' + sumOfCal;
   }
 
   function getMeals() {
@@ -89,6 +96,14 @@ var frontEnd = (function () {
       data.forEach(function (e) {
         createAnElement(e.id, e.name, e.calories, e.date);
       })
+    })
+  }
+
+  function delMeal(event) {
+    var id = event.target.getAttribute('value');
+    xhrRequest('DELETE', url + '/' + id, '', function(response) {
+      mealList.removeChild(document.getElementById(id));
+      sum.textContent = 'Sum of calories: ' + sumOfCal;
     })
   }
 
