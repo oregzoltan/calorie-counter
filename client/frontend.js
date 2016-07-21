@@ -35,7 +35,6 @@ var frontEnd = (function () {
   }
 
   function formatDate(date) {
-    console.log(date);
     return (date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate() + ' ' + date.getHours() + '-' + date.getMinutes());
   }
 
@@ -63,6 +62,7 @@ var frontEnd = (function () {
   function getMeals() {
     xhrRequest('GET', url, '', function(response) {
       var data = JSON.parse(response);
+      data = data.meals;
       setSum(data);
       data.forEach(function (e) {
         createAnElement(e.id, e.name, e.calories, e.date);

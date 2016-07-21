@@ -11,7 +11,7 @@ var Meals = (function (con) {
     con.query('INSERT INTO meals SET ?', meal, function(err,row){
       errorHandler(err);
       if (row.affectedRows === 1) {
-        cb({"status": "ok"});
+        cb({"status": "ok", "meal": {"id": row.insertId, "name": meal.name, "calories": meal.calories, "date": meal.date}});
       } else {
         cb(row);
       }
@@ -21,7 +21,7 @@ var Meals = (function (con) {
   function publicGetMeal (req, cb) {
     con.query('SELECT * FROM meals;',function(err,rows){
       errorHandler(err);
-      cb(rows);
+      cb({"meals":rows});
     });
   }
 
@@ -29,7 +29,8 @@ var Meals = (function (con) {
     con.query('DELETE FROM meals WHERE id = ?', id, function(err,row){
       errorHandler(err);
       if (row.affectedRows === 1) {
-        cb({"status": "ok"});
+        console.log(row);
+        cb({"status": "ok", "meal": {"id": id}});
       } else {
         cb({"status": "not exists"});
       }

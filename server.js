@@ -34,11 +34,11 @@ app.post('/meals', function(req, res) {
 app.get('/meals', function(req, res) {
   if (req.query.date) {
     myMeals.filterMeals(req.query.date, function (result) {
-      res.send(formatDate(result));
+      res.send(result);
     });
   } else {
     myMeals.getMeal(req, function (result) {
-      res.send(formatDate(result));
+      res.send(result);
     });
   }
 });
@@ -48,12 +48,5 @@ app.delete('/meals/:id', function(req, res) {
     res.send(result);
   });
 });
-
-function formatDate(result) {
-  result.forEach( function (e) {
-    e.date = dateFormat(e.date, "yyyy-mm-dd hh:MM");
-  })
-  return (result);
-}
 
 app.listen(3000);
