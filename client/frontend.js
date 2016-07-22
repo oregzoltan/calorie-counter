@@ -49,7 +49,6 @@ var frontEnd = (function () {
   }
 
   function createAnElement(item) {
-    console.log(item);
     var newMeal = document.createElement('li');
     var newName = document.createElement('div');
     var newCalories = document.createElement('div');
@@ -72,8 +71,12 @@ var frontEnd = (function () {
   }
 
   function setSum(data) {
+    sum.textContent = 'Sum of calories: ' + calculateSum(data);;
+  }
+
+  function calculateSum(data) {
     sumOfCal = data.reduce(function(result, item) {return result + item.calories;}, 0);
-    sum.textContent = 'Sum of calories: ' + sumOfCal;
+    return (sumOfCal);
   }
 
   function getMeals() {
