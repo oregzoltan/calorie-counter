@@ -8,32 +8,17 @@ var frontEnd = (function () {
   var mealList = document.querySelector('.mealList');
   var filterDate = document.querySelector('#filterDate');
   var sum = document.querySelector('.sum');
-  var url = 'http://localhost:3000/meals';
   var sumOfCal = 0;
+  var addButton = document.querySelector('.addButton');
+  var nowButton = document.querySelector('.nowButton');
+  var filterButton = document.querySelector('.filterButton');
+  var showAllButton = document.querySelector('.showAllButton');
+  addButton.addEventListener('click', addNewMeal);
+  nowButton.addEventListener('click', fillDate);
+  filterButton.addEventListener('click', filterByDate);
+  showAllButton.addEventListener('click', refreshList);
+  getMeals();
 
-  function init() {
-    var addButton = document.querySelector('.addButton');
-    var nowButton = document.querySelector('.nowButton');
-    var filterButton = document.querySelector('.filterButton');
-    var showAllButton = document.querySelector('.showAllButton');
-    addButton.addEventListener('click', addNewMeal);
-    nowButton.addEventListener('click', fillDate);
-    filterButton.addEventListener('click', filterByDate);
-    showAllButton.addEventListener('click', refreshList);
-    getMeals();
-  }
-
-  function xhrRequest(method, url, data, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open(method, url, true);
-    xhr.setRequestHeader('content-type', 'application/json');
-    xhr.send(data);
-    xhr.onload = function () {
-      if (xhr.readyState === 4) {
-        callback(xhr.response);
-      }
-    }
-  }
 
   function formatDate(date) {
     return (date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate() + ' ' + date.getHours() + '-' + date.getMinutes());
@@ -71,7 +56,7 @@ var frontEnd = (function () {
   }
 
   function setSum(data) {
-    sum.textContent = 'Sum of calories: ' + calculateSum(data);;
+    sum.textContent = 'Sum of calories: ' + calculateSum(data);
   }
 
   function calculateSum(data) {
@@ -80,7 +65,7 @@ var frontEnd = (function () {
   }
 
   function getMeals() {
-    xhrRequest('GET', url, '', function(response) {
+    ajax.xhrRequest('GET', url, '', function(response) {
       var data = JSON.parse(response);
       data = data.meals;
       setSum(data);
@@ -93,13 +78,13 @@ var frontEnd = (function () {
     nameOfMeal.value = '';
     calories.value = '';
     date.value = '';
-    xhrRequest('POST', url, JSON.stringify(newMealToAdd), function(response) {
+    ajax.xhrRequest('POST', url, JSON.stringify(newMealToAdd), function(response) {
       refreshList();
     })
   }
 
   function filterByDate() {
-    xhrRequest('GET', url + '?date=' + filterDate.value, '', function(response) {
+    ajax.xhrRequest('GET', url + '?date=' + filterDate.value, '', function(response) {
       var data = JSON.parse(response);
       setSum(data);
       mealList.innerHTML='';
@@ -112,17 +97,11 @@ var frontEnd = (function () {
     var confWindow = confirm('Are you sure you want to delete this meal?');
     if (confWindow) {
       var id = event.target.getAttribute('value');
-      xhrRequest('DELETE', url + '/' + id, '', function(response) {
+      ajax.xhrRequest('DELETE', url + '/' + id, '', function(response) {
         sumOfCal -= parseInt(document.getElementById(id).getAttribute('value'));
         sum.textContent = 'Sum of calories: ' + sumOfCal;
         mealList.removeChild(document.getElementById(id));
       })
     }
   }
-
-  return {
-    init: init
-  }
 })();
-
-frontEnd.init();
