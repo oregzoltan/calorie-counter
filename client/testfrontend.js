@@ -1,22 +1,22 @@
 'use strict';
 
 var test = require('tape');
-
 var functionTest = require('./functionstotest');
 
-var obj = [
-  {calories:1},
-  {calories:2},
-  {calories:3}
-];
-console.log(functionTest);
+var obj = [{calories:1}, {calories:2}, {calories:3}];
+
 test('is returning a number', function (t) {
-  t.notEqual(functionTest.calculateSum(obj),'a');
+  t.notEqual(functionTest.calculateSum(obj), 'a');
   t.end();
 });
 
 test('is working on a list of objects', function (t) {
-  t.equal(functionTest.calculateSum(obj),6);
+  t.equal(functionTest.calculateSum(obj), 6);
+  t.end();
+});
+
+test('is returning the correct sum', function (t) {
+  t.notEqual(functionTest.calculateSum(obj), 5);
   t.end();
 });
 

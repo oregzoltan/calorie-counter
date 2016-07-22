@@ -1,6 +1,5 @@
 'use strict';
 
-var dateFormat = require('dateformat');
 const db = require('./db');
 var express = require('express');
 var bodyParser = require('body-parser');
