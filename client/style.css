@@ -1,6 +1,7 @@
 
 body {
   background-image: url(veg.jpg);
+  background-size: cover;
 }
 
 #nameOfMeal, #calories, #date, #filterDate {
@@ -44,6 +45,7 @@ li div {
 
 .nowButton, .filterButton, .showAllButton, .addButton {
   border: none;
+  outline: none;
   border-radius: 5px;
   font-family: Lato-Regular, sans-serif;
   font-size: 26px;
@@ -63,7 +65,11 @@ li div {
   height:20px;
   background-size: 100% 100%;
   border: none;
+  outline: none;
   border-radius: 2px;
   background-image: url(bin.png);
   opacity: 0.7;
+}
+.delButton:hover {
+  transform: rotateZ(10deg);
 }

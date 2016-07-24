@@ -10,7 +10,7 @@ var Meals = (function (con) {
   function publicAddMeal (meal, cb) {
     con.query('INSERT INTO meals SET ?', meal, function(err,row){
       errorHandler(err);
-      if (row.affectedRows === 1) {
+      if (row !== undefined && row.affectedRows === 1) {
         cb({"status": "ok", "meal": {"id": row.insertId, "name": meal.name, "calories": meal.calories, "date": meal.date}});
       } else {
         cb(row);
