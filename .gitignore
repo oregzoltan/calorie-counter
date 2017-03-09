@@ -1,0 +1,5 @@
+Thumbs.db
+node_modules
+.eslintrc.js
+npm-debug.log
+.git
